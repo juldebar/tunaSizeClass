@@ -1,0 +1,6 @@
+url,url_zip,zip_file_name,csv_file_name
+https://iotc.org/data/datasets/latest/SF/YFT,https://iotc.org/sites/default/files/documents/2025/10/IOTC-2025-WPTT27-DATA06_SFYFT.zip,IOTC-2025-WPTT27-DATA06_SFYFT.zip,IOTC-DATASETS-SF-YFT-1952-2024-MELTED-FORMAT.csv
+https://iotc.org/data/datasets/latest/SF/SKJ,https://iotc.org/sites/default/files/documents/2025/10/IOTC-2025-WPTT27-DATA05_SFSKJ.zip,IOTC-2025-WPTT27-DATA05_SFSKJ.zip,IOTC-DATASETS-SF-SKJ-1982-2024-MELTED-FORMAT.csv
+https://iotc.org/data/datasets/latest/SF/BET,https://iotc.org/sites/default/files/documents/2025/10/IOTC-DATASETS-SF-BET-1965-2024.zip,IOTC-DATASETS-SF-BET-1965-2024.zip,IOTC-DATASETS-SF-BET-1965-2024-MELTED-FORMAT.csv
+https://iotc.org/data/datasets/latest/SF/ALB,https://iotc.org/sites/default/files/documents/2025/02/IOTC-DATASETS-SF-ALB-1965-2023_0.zip,IOTC-DATASETS-SF-ALB-1965-2023_0.zip,IOTC-DATASETS-SF-ALB-1965-2023-MELTED-FORMAT.csv
+https://iotc.org/data/datasets/latest/SF/SWO,https://iotc.org/sites/default/files/documents/2025/07/2025-05-20IOTC-DATASETS-2025-05-20-SF-SWO-1970-2023_0.zip,2025-05-20IOTC-DATASETS-2025-05-20-SF-SWO-1970-2023.zip,IOTC-DATASETS-2025-05-20-SF-SWO-1970-2023.xslx
