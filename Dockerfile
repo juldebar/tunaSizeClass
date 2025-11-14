@@ -33,7 +33,12 @@ RUN apt-get update && apt-get install -y \
     libfontconfig1-dev \
     libharfbuzz-dev \
     libfribidi-dev \
-    make
+    make \
+    libabsl-dev \
+    cmake \
+    libicu-dev \
+    libpng-dev \
+    libfreetype6-dev
     
 ## update system libraries
 RUN apt update && apt upgrade -y && apt clean
