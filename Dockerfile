@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     libjq-dev \
     git \
+    libfontconfig1-dev \
     make
     
 ## update system libraries
