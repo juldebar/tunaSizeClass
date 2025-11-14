@@ -12,7 +12,7 @@ library(leafpop)
 library(shinyWidgets)
 library(plotly)
 library(DT)
-library(futile.logg)
+library(futile.logger)
 sf_use_s2(FALSE)
 
 # Log the loading of libraries
