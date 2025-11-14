@@ -151,15 +151,10 @@ ui <- fluidPage(
                           absolutePanel(id = "plots", class = "panel panel-default", fixed = TRUE,
                                         draggable = TRUE, top = "12%", left = "auto", right="1%", width = "25%", height = "30%",
                                         # top = "12%", right = "1.5%", width = "auto", #fixed=TRUE,
-                                        h2("Taxa composition"),
+                                        h2(paste0("Group identifier: ")),
+                                        textOutput("idGroup"),
                                         # tags$br(),
-                                        plotlyOutput("pie_map", height = '70%'),
-                                        actionButton(
-                                          inputId = "switched",
-                                          label = "Switch taxa level (family or species)",
-                                          # icon("move"), 
-                                          style="color: #fff; background-color: #008a20; border-color: #2e6da4; font-size: xx-large;font-weight: bold;"
-                                        )
+                                        plotlyOutput("pie_map", height = '70%')
                                         ),
                           absolutePanel(id = "logo", class = "logo", bottom = "2%", left = "2%", width = "auto", fixed=FALSE, draggable = TRUE, height = "auto",
                                         tags$a(href='https://www.ird.fr/', tags$img(src='logo_IRD.svg',height='5%'))),
@@ -231,9 +226,6 @@ server <- function(input, output, session) {
   },
   ignoreInit = TRUE)
   
-  observeEvent(input$switched, {
-    if(switch_taxa()){switch_taxa(FALSE)}else{switch_taxa(TRUE)}
-  })
   
   data <- eventReactive(input$submit, {
     if(is.null(input$species)){filter_species=target_species$scientificName}else{filter_species=input$species}
@@ -249,15 +241,17 @@ server <- function(input, output, session) {
   
   
   plot_df <- eventReactive(current_gbifID(), {
-    sizeClassData <- strsplit(data()$sizeClasses[current_gbifID()], ",")[[1]]  
-     data.frame(sizeClassData) %>% 
-        dplyr::mutate(class=gsub("=.*", "",sizeClassData), count=as.numeric(gsub(".*=", "",sizeClassData)))
+    sizeClassData <- strsplit(data()$sizeClasses[current_gbifID()], ",")[[1]]  %>% 
+      data.frame() %>% 
+        dplyr::mutate(class=gsub("=.*", "",.), count=as.numeric(gsub(".*=", "",.)))
       
       },ignoreInit = TRUE)    
     
 
 ############################################################# OUTPUTS   ############################################################# 
-    
+  output$idGroup <- renderText({
+    current_gbifID()                   
+  })
 
     output$DT_within_WKT <- renderDT({
       # data() %>%  dplyr::filter(st_within(st_as_sfc(input$polygon, crs = 4326), sparse = FALSE))  %>% st_drop_geometry()
@@ -289,7 +283,7 @@ server <- function(input, output, session) {
     # plot(all_points)
     
     
-    sizeClassData <- strsplit(data()$sizeClasses[1], ",")[[1]] 
+    sizeClassData <- strsplit(df$sizeClasses[1], ",")[[1]] 
     
     testdd <-as.data.frame(sizeClassData)  %>% 
       dplyr::mutate(class=gsub("=.*", "",sizeClassData), count=as.numeric(gsub(".*=", "",sizeClassData)))
@@ -437,57 +431,8 @@ server <- function(input, output, session) {
       return()
     text<-paste("North ", north, "South ", east)
     
-    # mymap_proxy = leafletProxy("mymap") %>% clearPopups() %>% addPopups(south,west,coord) %>%
-    # fitBounds(south, east, north, west) %>%
-    # # addRectangles(lng1=east,lat1=south,lng2=west,lat2=north,fillColor = "grey",fillOpacity = 0.1, stroke = TRUE, color = "red", opacity = 1, group = "draw")
-    # addPolygons(data = current_selection,color="red",fillColor = "transparent", group="current_selection")
-    # # textOutput("wkt")
-    
     },ignoreInit = FALSE)
-# })
 
-  
-
-  
-  
-  
-  
-  # 
-  # output$pie_map <- renderPlotly({
-  #   
-  #   shiny::validate(
-  #     need(nrow(data())>0, 'Sorry no data with current filters !'),
-  #     errorClass = "myClass"
-  #   )
-  #   
-  #   if(switch_taxa()){
-  #     taxa <- "species"
-  #     pie_data <- data()  %>% st_drop_geometry() %>% dplyr::group_by(scientificName) %>% dplyr::summarise(count = n_distinct(gbifID)) %>% dplyr::arrange(count) # %>% top_n(10)
-  #     fig <- plot_ly(pie_data, labels = ~scientificName, values = ~count, type = 'pie',# width = "500px", height = "1000px",
-  #                    marker = list( line = list(color = '#FFFFFF', width = 1), sort = FALSE),
-  #                    showlegend = TRUE)
-  #   }else{
-  #     taxa <- "family"
-  #     pie_data <- data()  %>% st_drop_geometry() %>% dplyr::group_by(family) %>% dplyr::summarise(count = n_distinct(gbifID)) %>% dplyr::arrange(count) # %>% top_n(10)
-  #     fig <- plot_ly(pie_data, labels = ~family, values = ~count, type = 'pie', #width = "500px", height = "1000px",
-  #                    marker = list( line = list(color = '#FFFFFF', width = 1), sort = FALSE),
-  #                    showlegend = TRUE)
-  #   }
-  #   
-  #   
-  # 
-  # 
-  #   fig <- fig %>% layout(title = paste0('Main ',taxa,' composition'),
-  #                         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-  #                         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-  #   fig <- fig %>% layout(legend = list(orientation = 'h')) 
-  #   fig
-  # 
-  # 
-  # })
-  # 
-  # 
-  
   output$pie_map <- renderPlotly({
     
     shiny::validate(
@@ -503,15 +448,8 @@ server <- function(input, output, session) {
     fig <- fig %>% layout(yaxis = list(title = 'Count'))
     
     fig
-    
-    
-    
-    
   })
   
-  
-
-   
 }
 
 # Run the application 
