@@ -1,5 +1,6 @@
 # tunaSizeClass
 
+Extract size class data, transformed to Darwin Core standard, displayed by a generic Shiny app.
 
 ## Running with Docker (recommended)
 
