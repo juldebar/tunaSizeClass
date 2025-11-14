@@ -2,7 +2,8 @@
 # renv::snapshot()
 # renv::restore()
 # renv::load()
-
+library(sf)
+library(dplyr)
 CWP_regular_grid_areas <- read.csv("https://github.com/fdiwg/fdi-codelists/raw/refs/heads/main/global/cwp/cl_areal_grid.csv") %>% 
   dplyr::mutate(locationID = as.character(code)) %>% 
   dplyr::select(locationID,GRIDTYPE,geom_wkt) %>% 
