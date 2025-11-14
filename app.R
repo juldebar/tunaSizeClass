@@ -12,26 +12,19 @@ library(leafpop)
 library(shinyWidgets)
 library(plotly)
 library(DT)
+library(futile.logg)
 sf_use_s2(FALSE)
 
 # Log the loading of libraries
 futile.logger::flog.info("All libraries loaded successfully.")
-
 ############################################################ DATA and FILTER ########################################################################################################################################################################
 filepath <-"./data/dwc_melted.rds"
 if(!file.exists(filepath)){
 source("./data/bindDatasets.R")
-  # data_dwc <- as_tibble(read.csv("/home/julien/Downloads/0065082-210914110416597.csv",sep="\t"))  %>% 
-  #   dplyr::select(gbifID,scientificName,family,eventDate,year,individualCount,recordedBy,decimalLatitude,decimalLongitude,depth)  %>% 
-  #   st_as_sf(.,coords=c("decimalLongitude","decimalLatitude"),crs=4326) 
-  # saveRDS(data_dwc,"./data/dwc.rds")
 }
+futile.logger::flog.info("Load data")
 data_dwc <- readRDS(filepath)
-
-# Set default values for filters to be displayed by UI and used by server to filter and process data
-# default_wkt <- 'POLYGON ((31.11328 -31.50363, 31.11328 -3.162456, 71.01562 -3.162456, 71.01562 -31.50363, 31.11328 -31.50363))'
-switch_taxa <- reactiveVal(TRUE) 
-
+futile.logger::flog.info("Set default values for filters to be displayed by UI and used by server to filter and process data")
 default_geom <- st_as_sfc(st_bbox(data_dwc))
 default_wkt <- sf::st_as_text(default_geom)
 current_geom <- reactiveVal(default_geom)
@@ -43,16 +36,13 @@ target_year <- unique(data_dwc$year)
 default_year <- target_year[1]
 default_year <- target_year
 
-default_species <- c('Elagatis bipinnulata (Quoy & Gaimard, 1825)','Coryphaena hippurus Linnaeus, 1758','Acanthocybium solandri (Cuvier, 1832)','Uraspis secunda (Poey, 1860)')
-default_species <- c('Katsuwonus pelamis')
 # default_species <- NULL
+default_species <- c('Katsuwonus pelamis')
 target_species <-  unique(data_dwc$scientificName)
 
-# default_family <- c("Coryphaenidae","Carangidae","Scombridae", "Carcharhinidae","Istiophoridae")
-target_family <- unique(data_dwc$family)
 # default_family <- NULL
+target_family <- unique(data_dwc$family)
 default_family <- target_family[1]
-
 
 filters_combinations <- data_dwc %>% st_drop_geometry()  %>% distinct(family, scientificName) %>% arrange(family, scientificName)
 
