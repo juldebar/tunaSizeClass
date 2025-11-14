@@ -72,7 +72,7 @@ RUN R -e "install.packages('renv', repos='https://cran.r-project.org/')"
 
 # Copy renv configuration and lockfile
 COPY renv.lock ./
-COPY .Rprofile ./
+# COPY .Rprofile ./
 # COPY renv/activate.R renv/activate.R
 COPY renv/settings.json renv/settings.json
 
